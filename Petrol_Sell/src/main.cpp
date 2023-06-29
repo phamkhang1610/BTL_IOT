@@ -23,7 +23,7 @@ char keys[ROWS][COLS] = {
 byte rowPins[ROWS] = {12, 14, 27, 26}; // Các chân hàng kết nối với Arduino
 byte colPins[COLS] = {25, 33, 32};    // Các chân cột kết nối với Arduino
 
-Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
+Keypad keypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);// lây key trong keybroad
 int enteredAmount = 0; // Biến để lưu số tiền đã nhập
 int selectedFuel = 0; // Biến để lưu loại xăng đã chọn (0: không có chọn, 1: Ron 92, 2: Ron 95)
 
@@ -58,7 +58,6 @@ bool paymentComplete  = false;
 MFRC522 rfid(SS_PIN, RST_PIN); // Khởi tạo đối tượng RFID
 
 FirebaseData firebaseData;
-
 void startMotor();
 void stopMotor();
 float convertToLitres(int enteredAmount, int selectedFuel);
@@ -119,12 +118,8 @@ void setup()
   digitalWrite(IN1, LOW);
   digitalWrite(IN2, LOW);
 }
-void loop() {
-  // String cardUID = readRFID();
-  // // String cardUID = "b9413794";
-  // Serial.println(cardUID);
-  // Serial.println(Firebase.getInt(firebaseData, "/id/" + cardUID + "/money"));
 
+void loop() {
   while (!paymentComplete) {
     char key = keypad.getKey();
 
@@ -176,7 +171,7 @@ void loop() {
           lcd.print("Thanh toan: ");
           delay(2000);
           String cardUID = readRFID();
-          // String cardUID = "b9413794";
+          
           Serial.println(cardUID);
           Serial.println(Firebase.getInt(firebaseData, "/id/" + cardUID + "/money"));
           delay(1000);
@@ -212,7 +207,7 @@ void loop() {
               if (currentMillis - previousMillis >= interval) {
                 pulse1Sec = pulseCount;
                 pulseCount = 0;
-                flowRate = ((1000.0 / (currentMillis - previousMillis)) * pulse1Sec) / calibrationFactor;
+                flowRate = ((1000.0 / (currentMillis - previousMillis)) * pulse1Sec) /  brationFactor;
                 previousMillis = currentMillis;
 
                 float flowLitresPerMinute = flowRate / 60.0 *1000 ;
